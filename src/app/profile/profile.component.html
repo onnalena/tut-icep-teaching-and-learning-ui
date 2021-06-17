@@ -1,0 +1,86 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport
+               [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+               [mode]="(isHandset$ | async) ? 'over' : 'side'"
+               [opened]="(isHandset$ | async) === false">
+    <mat-toolbar>Menu</mat-toolbar>
+    <mat-nav-list>
+      <a *ngFor="let item of menuItems" mat-list-item [routerLink]="'/'+item"> {{item | titlecase}} </a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <span>{{userDetails.accessID}} {{userDetails.firstName}}</span>
+    </mat-toolbar>
+   <mat-card>
+     <mat-card-content>
+       <mat-card-title>Student Details</mat-card-title>
+       <dl *ngIf="!isEdit">
+         <dt>Student Number</dt>
+         <dd>{{ userDetails.accessID }}</dd>
+         <dt>First Name</dt>
+         <dd>{{ userDetails.firstName }}</dd>
+         <dt>Last Name</dt>
+         <dd>{{ userDetails.lastName }}</dd>
+         <dt>Email</dt>
+         <dd>{{ userDetails.email }}</dd>
+         <dt>Contact Number</dt>
+         <dd>{{ userDetails.cellNumber }}</dd>
+       </dl>
+       <button *ngIf="!isEdit" mat-raised-button color="primary" (click)="edit()">Edit</button>
+
+       <form *ngIf="isEdit" [formGroup]="updateUserDetailsFormGroup" (ngSubmit)="update()">
+         <mat-form-field>
+           <input matInput placeholder="First Name" formControlName="firstname" required [(ngModel)]="userDetails.firstName">
+           <mat-error *ngIf="updateUserDetailsFormGroup.controls['firstname'].touched &&
+            updateUserDetailsFormGroup.controls['firstname'].hasError('required')">
+             First name required!
+           </mat-error>
+         </mat-form-field>
+
+         <mat-form-field>
+           <input matInput placeholder="Last Name" formControlName="lastname" required [(ngModel)]="userDetails.lastName">
+           <mat-error *ngIf="updateUserDetailsFormGroup.controls['lastname'].touched &&
+            updateUserDetailsFormGroup.controls['lastname'].hasError('required')">
+             Last name required!
+           </mat-error>
+         </mat-form-field>
+
+         <mat-form-field>
+           <input matInput placeholder="Email Address" formControlName="email" required [(ngModel)]="userDetails.email">
+           <mat-error *ngIf="updateUserDetailsFormGroup.controls['email'].touched &&
+            updateUserDetailsFormGroup.controls['email'].hasError('required')">
+             Email address required!
+           </mat-error>
+         </mat-form-field>
+
+         <mat-form-field>
+           <input matInput placeholder="Contact Number" formControlName="cellNumber" required [(ngModel)]="userDetails.cellNumber">
+           <mat-error *ngIf="updateUserDetailsFormGroup.controls['cellNumber'].touched &&
+            updateUserDetailsFormGroup.controls['cellNumber'].hasError('required')">
+             Contact number required!
+           </mat-error>
+         </mat-form-field>
+
+          <mat-error *ngIf="updateHasError">
+            <span>
+            {{ updateErrorMessage }}
+            </span>
+          </mat-error>
+          <div>
+          <button mat-raised-button color="primary">Save Changes</button>
+          </div>
+       </form>
+     </mat-card-content>
+   </mat-card>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

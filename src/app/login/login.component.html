@@ -1,0 +1,45 @@
+<mat-toolbar color="primary" class="expanded-toolbar">
+  <button mat-button><mat-icon>home</mat-icon></button>
+  <button mat-button [routerLink]="['/registration']">
+    <mat-icon>article</mat-icon>
+    Register
+  </button>
+</mat-toolbar>
+
+<mat-card>
+  <mat-card-content>
+    <mat-card-title>Login</mat-card-title>
+   <form [formGroup]="loginFormGroup" (ngSubmit)="onSubmit()">
+      <mat-form-field>
+        <input matInput placeholder="Access ID" formControlName="username"/>
+        <mat-hint>e.g staff/student number.</mat-hint>
+        <mat-error *ngIf="loginFormGroup.controls['username'].touched && loginFormGroup.controls['username'].hasError('required')">
+          Access ID required!
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput placeholder="Password" formControlName="password" type="password" required
+               [type]="fieldTextType ? 'text' : 'password'"
+               (click)="retrieveLoginUserDetails(loginFormGroup.controls.username.value)">
+        <mat-icon matSuffix (click)="fieldTextType = !fieldTextType">
+          {{fieldTextType ? 'visibility_off' : 'visibility'}}
+        </mat-icon>
+        <mat-error *ngIf="loginFormGroup.controls['password'].touched && loginFormGroup.controls['password'].hasError('required')">
+          Password required!
+        </mat-error>
+      </mat-form-field>
+
+     <mat-error *ngIf="hasError">
+				<span>
+          {{ errorMsg }}
+        </span>
+     </mat-error>
+
+    <button mat-raised-button color="primary">Login</button>
+    </form>
+  </mat-card-content>
+</mat-card>
+<app-home *ngIf="isLoggedIn" [isLoggedIn]="isLoggedIn" [loggedInUser]="loggedInUser"> <!-- [loggedInUser]="loggedInUser"--></app-home>
+
+

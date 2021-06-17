@@ -1,0 +1,80 @@
+<mat-toolbar color="primary" class="expanded-toolbar">
+  <button mat-button [routerLink]="['/registration']"><mat-icon>home</mat-icon></button>
+  <button mat-button [routerLink]="['/login']">
+    <mat-icon>power_settings_new</mat-icon>
+    Login
+  </button>
+</mat-toolbar>
+
+<h2>Create Password For TAL System</h2>
+<mat-card>
+  <mat-card-content>
+    <form [formGroup]="registrationFormGroup" (ngSubmit)="onSubmit()">
+      <mat-form-field>
+        <label>User type:</label>
+        <mat-select formControlName="usertype" >
+          <mat-option *ngFor="let user of users" [value]="user.value">{{user.name}}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="registrationFormGroup.controls['usertype'].hasError('required')">You must make a selection</mat-error>
+        <mat-error *ngIf="registrationFormGroup.controls['usertype'].hasError('pattern') &&
+        !registrationFormGroup.controls['usertype'].hasError('required')">
+          Your selection is invalid!
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field *ngIf="registrationFormGroup.controls.usertype.value == 'Lecturer'">
+        <input matInput placeholder="Staff Number" formControlName="accessID" required>
+        <mat-error *ngIf="registrationFormGroup.controls['accessID'].touched &&
+          registrationFormGroup.controls['accessID'].hasError('required')">
+          Staff number required!
+        </mat-error>
+      </mat-form-field>
+
+
+      <mat-form-field *ngIf="registrationFormGroup.controls.usertype.value == 'Student'">
+        <input matInput placeholder="Student Number" formControlName="accessID" required>
+        <mat-error *ngIf="registrationFormGroup.controls['accessID'].touched &&
+          registrationFormGroup.controls['accessID'].hasError('required')">
+          Student number required!
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput placeholder="Password" type="password"
+               [type]="fieldTextType ? 'text' : 'password'" formControlName="password" required
+               (click)="retrieveUserDetails(registrationFormGroup.controls.accessID.value)">
+        <mat-icon matSuffix (click)="fieldTextType = !fieldTextType">
+          {{fieldTextType ? 'visibility_off' : 'visibility'}}
+        </mat-icon>
+        <mat-error *ngIf="registrationFormGroup.controls['password'].touched &&
+           registrationFormGroup.controls['password'].hasError('required')">
+          Password required!
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput placeholder="Re-type password" type="password"
+               [type]="fieldTextType ? 'text' : 'password'" formControlName="confirmPassword" required>
+        <mat-icon matSuffix (click)="fieldTextType = !fieldTextType">
+          {{fieldTextType ? 'visibility_off' : 'visibility'}}
+        </mat-icon>
+        <mat-error *ngIf="registrationFormGroup.controls['confirmPassword'].touched &&
+           registrationFormGroup.controls['confirmPassword'].hasError('required')">
+          Re-type password!
+        </mat-error>
+      </mat-form-field>
+
+      <mat-error *ngIf="errorReg">
+				<span>
+          {{ errorRegMessage }}
+        </span>
+      </mat-error>
+
+      <div>
+        <button mat-raised-button color="primary">Register</button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>
+
+

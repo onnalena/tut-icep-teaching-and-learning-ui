@@ -1,0 +1,44 @@
+.sidenav-container {
+  height: 100%;
+}
+
+.sidenav {
+  width: 200px;
+}
+
+.sidenav .mat-toolbar {
+  background: inherit;
+}
+
+.mat-toolbar.mat-primary {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+mat-card {
+  max-width: 400px;
+  margin: 2em auto;
+  text-align: center;
+}
+
+mat-form-field {
+  display: block;
+}
+
+dl {
+  border: 10px double #ccc;
+  padding: 1.5em;
+}
+dt {
+  font-weight: bold;
+  font-size: larger;
+  text-decoration: underline;
+}
+dd {
+  margin: 0;
+  padding: 0 0 0.5em 0;
+}
+dt::after {
+  content: ":";
+}
+
